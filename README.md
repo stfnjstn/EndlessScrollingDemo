@@ -10,7 +10,7 @@ My Apps:
 https://itunes.apple.com/developer/stefan-josten/id949662361
 
 
-![Sample image](http://stefansdevplayground.blogspot.de/2015/11/quicktip-endless-scrolling-with.html#more)
+![Sample image](http://stefansdevplayground.blogspot.de/2015/11/quicktip-endless-scrolling-with.html)
 
 
 
