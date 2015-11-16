@@ -21,6 +21,8 @@ class GameScene: SKScene {
     var xOrgWorldPosition: CGFloat?
     var xOrgTouchPosition: CGFloat?
     var xTargetPosition: CGFloat?
+    var touchesEnded = true
+    var touchesCounter = 0
     
     override func didMoveToView(view: SKView) {
         
@@ -112,6 +114,7 @@ class GameScene: SKScene {
         for touch in touches {
             xOrgTouchPosition = touch.locationInNode(self).x
         }
+        touchesEnded = false
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -121,7 +124,9 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        xTargetPosition = nil
+        touchesEnded = true
+        touchesCounter = 100
+        //xTargetPosition = nil
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -129,8 +134,6 @@ class GameScene: SKScene {
         if let xPos = xTargetPosition {
             var xNewPos = worldNode!.position.x + (xPos - worldNode!.position.x) * 0.1
 
-
-        
             // Check if right end is reached
             if xNewPos <= -(2 * nodeTileWidth) {
                 xNewPos = 0
@@ -150,6 +153,15 @@ class GameScene: SKScene {
             } else {
                 spriteNode?.zRotation = -CGFloat(M_PI/2.0)
             }
+            
+            // Continue after touches ended
+            if touchesEnded {
+                touchesCounter = touchesCounter - 1
+                if touchesCounter <= 0 {
+                    xTargetPosition = nil
+                }
+            }
+            
         }
     }
 }
