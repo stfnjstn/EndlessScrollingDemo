@@ -64,51 +64,10 @@ class GameScene: SKScene {
         spriteNode?.yScale = 0.1
         spriteNode?.zPosition = 10
         self.addChild(spriteNode!)
+        
+        //self.addChild(ParallaxHandlerNode(frame: self.frame.size))
     }
-    
-//    // Implement the scrolling, triggered by swipe gestures
-//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        
-//        for touch in touches {
-//            
-//            // Touch position
-//            let xTouchPosition = touch.locationInNode(self).x
-//            if xOrgPosition != 0.0 {
-//                
-//                // calculate the new position
-//                let xNewPosition = worldNode!.position.x + (xOrgPosition - xTouchPosition)
-//                
-//                // Check if right end is reached
-//                if xNewPosition <= -(2 * nodeTileWidth) {
-//                    worldNode!.position = CGPoint(x: 0, y: 0)
-//                    print("Right end reached")
-//                // Check if left end is reached
-//                } else if xNewPosition >= 0 {
-//                    worldNode!.position = CGPoint(x: -(2 * nodeTileWidth), y: 0)
-//                    print("Left end reached")
-//                } else {
-//                    worldNode!.position = CGPoint(x: xNewPosition, y: 0)
-//                }
-//                
-//                // Rotate sprite depending on direction
-//                if xTouchPosition < xOrgPosition {
-//                    spriteNode?.zRotation = CGFloat(M_PI/2.0)
-//                } else {
-//                    spriteNode?.zRotation = -CGFloat(M_PI/2.0)
-//                }
-//                
-//            }
-//            
-//            // Store the current touch position to calculate the delta in the next iteration
-//            xOrgPosition = xTouchPosition
-//        }
-//    }
-//    
-//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        // Reset value for the next swipe gesture
-//        xOrgPosition = 0
-//    }
-    
+        
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         xOrgWorldPosition = worldNode?.position.x
         for touch in touches {
@@ -127,6 +86,12 @@ class GameScene: SKScene {
         touchesEnded = true
         touchesCounter = 100
         //xTargetPosition = nil
+    }
+    
+    var currentSpeed: CGFloat = 0.0
+    var tagetSpeed: CGFloat = 0.0
+    func getTargetSpeed() -> CGFloat {
+        return 1
     }
     
     override func update(currentTime: CFTimeInterval) {

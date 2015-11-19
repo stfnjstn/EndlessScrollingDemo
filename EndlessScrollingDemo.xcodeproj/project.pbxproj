@@ -16,6 +16,7 @@
 		2C80C3841BF651E20067EC62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C80C3821BF651E20067EC62 /* LaunchScreen.storyboard */; };
 		2C80C38E1BF656A80067EC62 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2C80C38D1BF656A80067EC62 /* .gitignore */; };
 		2C80C3901BF6572C0067EC62 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 2C80C38F1BF6572C0067EC62 /* README.md */; };
+		2CB81CED1BFD2B6700CC135D /* ParallaxHandlerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB81CEC1BFD2B6700CC135D /* ParallaxHandlerNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		2C80C3851BF651E20067EC62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C80C38D1BF656A80067EC62 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2C80C38F1BF6572C0067EC62 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2CB81CEC1BFD2B6700CC135D /* ParallaxHandlerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallaxHandlerNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				2C80C3771BF651E20067EC62 /* GameScene.sks */,
 				2C80C3791BF651E20067EC62 /* GameScene.swift */,
 				2C80C37B1BF651E20067EC62 /* GameViewController.swift */,
+				2CB81CEC1BFD2B6700CC135D /* ParallaxHandlerNode.swift */,
 				2C80C37D1BF651E20067EC62 /* Main.storyboard */,
 				2C80C3801BF651E20067EC62 /* Assets.xcassets */,
 				2C80C3821BF651E20067EC62 /* LaunchScreen.storyboard */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C80C37A1BF651E20067EC62 /* GameScene.swift in Sources */,
+				2CB81CED1BFD2B6700CC135D /* ParallaxHandlerNode.swift in Sources */,
 				2C80C37C1BF651E20067EC62 /* GameViewController.swift in Sources */,
 				2C80C3901BF6572C0067EC62 /* README.md in Sources */,
 				2C80C3761BF651E20067EC62 /* AppDelegate.swift in Sources */,
@@ -302,6 +306,7 @@
 				2C80C38A1BF651E20067EC62 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
