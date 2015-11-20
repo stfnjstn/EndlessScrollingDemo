@@ -68,13 +68,15 @@ class GameScene: SKScene {
         spriteNode?.zPosition = 10
         self.addChild(spriteNode!)
     }
-        
+    
+    // Store the start touch position
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             xTouchStartPosition = touch.locationInNode(self).x
         }
     }
     
+    // Calculate the distance of the toch movement
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             xTouchCurrentPosition = touch.locationInNode(self).x
@@ -82,12 +84,14 @@ class GameScene: SKScene {
         }
     }
     
+    // Reset all movement states
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         xTouchCurrentPosition = 0.0
         xTouchDistance = 0.0
         xTouchStartPosition = 0.0
     }
     
+    // SpriteKits gameloop function
     override func update(currentTime: CFTimeInterval) {
         
         // Scroll the background
