@@ -11,11 +11,11 @@ import SpriteKit
 class GameScene: SKScene {
     
     // Declare the globaly needed sprite kit nodes
-    var worldNode: SKNode?
+    var worldNode: BackgroundScrollingNode?
     var spriteNode: SKSpriteNode?
 
     // store the width of the NodeTiles
-    var nodeTileWidth: CGFloat = 0.0
+    //var nodeTileWidth: CGFloat = 0.0
     
     // store the start position of the movement
     var xOrgWorldPosition: CGFloat?
@@ -34,28 +34,28 @@ class GameScene: SKScene {
         self.addChild(backgroundNode)
         
         // Setup world
-        worldNode = SKNode()
+        worldNode = BackgroundScrollingNode() // SKNode()
         self.addChild(worldNode!)
         
-        // Setup dynamic background tiles
-        // Image of left and right node must be identical
-        let leftNode = SKSpriteNode(imageNamed: "LeftTile")
-        let middleNode = SKSpriteNode(imageNamed: "RightTile")
-        let rightNode = SKSpriteNode(imageNamed: "LeftTile")
-        
-        nodeTileWidth = leftNode.frame.size.width
-        
-        leftNode.anchorPoint = CGPoint(x: 0, y: 0)
-        leftNode.position = CGPoint(x: 0, y: 0)
-        middleNode.anchorPoint = CGPoint(x: 0, y: 0)
-        middleNode.position = CGPoint(x: nodeTileWidth, y: 0)
-        rightNode.anchorPoint = CGPoint(x: 0, y: 0)
-        rightNode.position = CGPoint(x: nodeTileWidth * 2, y: 0)
-        
-        // Add tiles to worldNode. worldNode is used to realize the scrolling
-        worldNode!.addChild(leftNode)
-        worldNode!.addChild(rightNode)
-        worldNode!.addChild(middleNode)
+//        // Setup dynamic background tiles
+//        // Image of left and right node must be identical
+//        let leftNode = SKSpriteNode(imageNamed: "LeftTile")
+//        let middleNode = SKSpriteNode(imageNamed: "RightTile")
+//        let rightNode = SKSpriteNode(imageNamed: "LeftTile")
+//        
+//        nodeTileWidth = leftNode.frame.size.width
+//        
+//        leftNode.anchorPoint = CGPoint(x: 0, y: 0)
+//        leftNode.position = CGPoint(x: 0, y: 0)
+//        middleNode.anchorPoint = CGPoint(x: 0, y: 0)
+//        middleNode.position = CGPoint(x: nodeTileWidth, y: 0)
+//        rightNode.anchorPoint = CGPoint(x: 0, y: 0)
+//        rightNode.position = CGPoint(x: nodeTileWidth * 2, y: 0)
+//        
+//        // Add tiles to worldNode. worldNode is used to realize the scrolling
+//        worldNode!.addChild(leftNode)
+//        worldNode!.addChild(rightNode)
+//        worldNode!.addChild(middleNode)
         
         // Setup sprite
         spriteNode = SKSpriteNode(imageNamed: "Spaceship")
@@ -79,19 +79,31 @@ class GameScene: SKScene {
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             xTargetPosition = xOrgWorldPosition! - xOrgTouchPosition! + touch.locationInNode(self).x
+            xCurrentTouchPosition = touch.locationInNode(self).x
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         touchesEnded = true
         touchesCounter = 100
+        xCurrentTouchPosition = 0.0
+        xOrgTouchPosition = 0.0
         //xTargetPosition = nil
     }
     
-    var currentSpeed: CGFloat = 0.0
-    var tagetSpeed: CGFloat = 0.0
+
+    var xCurrentTouchPosition: CGFloat = 0.0
     func getTargetSpeed() -> CGFloat {
-        return 1
+        if xOrgTouchPosition == nil {
+            return 0.0
+        }
+        return xOrgTouchPosition! - xCurrentTouchPosition
+    }
+    
+    var currentSpeed: CGFloat = 0.0
+    //var targetSpeed: CGFloat = 0.0
+    func scroll(targetSpeed: CGFloat, timeFrame: CFTimeInterval) {
+    
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -100,13 +112,15 @@ class GameScene: SKScene {
             var xNewPos = worldNode!.position.x + (xPos - worldNode!.position.x) * 0.1
 
             // Check if right end is reached
-            if xNewPos <= -(2 * nodeTileWidth) {
+            if xNewPos <= -(2 * worldNode!.nodeTileWidth) {
+                xTargetPosition = xTargetPosition! - xNewPos
                 xNewPos = 0
                 xOrgWorldPosition = 0
                 print("Right end reached")
             // Check if left end is reached
             } else if xNewPos >= 0 {
-                xNewPos = -(2 * nodeTileWidth)
+                xNewPos = -(2 * worldNode!.nodeTileWidth)
+                xTargetPosition = xTargetPosition! + xNewPos
                 xOrgWorldPosition = xNewPos
                 print("Left end reached")
             }
