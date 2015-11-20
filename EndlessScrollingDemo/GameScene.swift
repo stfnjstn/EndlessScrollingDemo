@@ -10,19 +10,21 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    // Declare the globaly needed sprite kit nodes
-    var worldNode: BackgroundScrollingNode?
-    var spriteNode: SKSpriteNode?
-
-    // store the width of the NodeTiles
-    //var nodeTileWidth: CGFloat = 0.0
+    // Some global variables to preserve the state and store the touch positions
+    var lastUpdateTime: CFTimeInterval?
+    var currentSpeed: CGFloat = 0.0
+    var nodeTileWidth: CGFloat = 0.0
+    var xTouchCurrentPosition: CGFloat = 0.0
+    var xTouchStartPosition: CGFloat = 0.0
+    var xTouchDistance: CGFloat = 0.0
     
-    // store the start position of the movement
-    var xOrgWorldPosition: CGFloat?
-    var xOrgTouchPosition: CGFloat?
-    var xTargetPosition: CGFloat?
-    var touchesEnded = true
-    var touchesCounter = 0
+    // Some global constants to configure the speed
+    let speedFactor:CGFloat = 5.0
+    let easeOutfactor: CGFloat = 0.04
+    
+    // Declare the globaly needed sprite kit nodes
+    var worldNode: SKSpriteNode?
+    var spriteNode: SKSpriteNode?
     
     override func didMoveToView(view: SKView) {
         
@@ -33,114 +35,94 @@ class GameScene: SKScene {
         backgroundNode.zPosition = -10
         self.addChild(backgroundNode)
         
-        // Setup world
-        worldNode = BackgroundScrollingNode() // SKNode()
+        // Setup dynamic background tiles
+        worldNode = SKSpriteNode()
         self.addChild(worldNode!)
         
-//        // Setup dynamic background tiles
-//        // Image of left and right node must be identical
-//        let leftNode = SKSpriteNode(imageNamed: "LeftTile")
-//        let middleNode = SKSpriteNode(imageNamed: "RightTile")
-//        let rightNode = SKSpriteNode(imageNamed: "LeftTile")
-//        
-//        nodeTileWidth = leftNode.frame.size.width
-//        
-//        leftNode.anchorPoint = CGPoint(x: 0, y: 0)
-//        leftNode.position = CGPoint(x: 0, y: 0)
-//        middleNode.anchorPoint = CGPoint(x: 0, y: 0)
-//        middleNode.position = CGPoint(x: nodeTileWidth, y: 0)
-//        rightNode.anchorPoint = CGPoint(x: 0, y: 0)
-//        rightNode.position = CGPoint(x: nodeTileWidth * 2, y: 0)
-//        
-//        // Add tiles to worldNode. worldNode is used to realize the scrolling
-//        worldNode!.addChild(leftNode)
-//        worldNode!.addChild(rightNode)
-//        worldNode!.addChild(middleNode)
+        // Create the dynamic background tiles. Image of left and right node must be identical
+        let leftNode = SKSpriteNode(imageNamed: "LeftTile")
+        let middleNode = SKSpriteNode(imageNamed: "RightTile")
+        let rightNode = SKSpriteNode(imageNamed: "LeftTile")
         
-        // Setup sprite
+        // store this value globaly to avoid recalculations during each update call
+        nodeTileWidth = leftNode.frame.size.width
+        
+        leftNode.anchorPoint = CGPoint(x: 0, y: 0)
+        leftNode.position = CGPoint(x: 0, y: 0)
+        middleNode.anchorPoint = CGPoint(x: 0, y: 0)
+        middleNode.position = CGPoint(x: nodeTileWidth, y: 0)
+        rightNode.anchorPoint = CGPoint(x: 0, y: 0)
+        rightNode.position = CGPoint(x: nodeTileWidth * 2, y: 0)
+        
+        // Add the tiles to worldNode. worldNode is used to realize the scrolling
+        worldNode!.addChild(leftNode)
+        worldNode!.addChild(rightNode)
+        worldNode!.addChild(middleNode)
+        
+        
+        // Setup spaceship sprite
         spriteNode = SKSpriteNode(imageNamed: "Spaceship")
         spriteNode?.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         spriteNode?.xScale = 0.1
         spriteNode?.yScale = 0.1
         spriteNode?.zPosition = 10
         self.addChild(spriteNode!)
-        
-        //self.addChild(ParallaxHandlerNode(frame: self.frame.size))
     }
         
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        xOrgWorldPosition = worldNode?.position.x
         for touch in touches {
-            xOrgTouchPosition = touch.locationInNode(self).x
+            xTouchStartPosition = touch.locationInNode(self).x
         }
-        touchesEnded = false
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
-            xTargetPosition = xOrgWorldPosition! - xOrgTouchPosition! + touch.locationInNode(self).x
-            xCurrentTouchPosition = touch.locationInNode(self).x
+            xTouchCurrentPosition = touch.locationInNode(self).x
+            xTouchDistance = xTouchStartPosition - xTouchCurrentPosition
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        touchesEnded = true
-        touchesCounter = 100
-        xCurrentTouchPosition = 0.0
-        xOrgTouchPosition = 0.0
-        //xTargetPosition = nil
-    }
-    
-
-    var xCurrentTouchPosition: CGFloat = 0.0
-    func getTargetSpeed() -> CGFloat {
-        if xOrgTouchPosition == nil {
-            return 0.0
-        }
-        return xOrgTouchPosition! - xCurrentTouchPosition
-    }
-    
-    var currentSpeed: CGFloat = 0.0
-    //var targetSpeed: CGFloat = 0.0
-    func scroll(targetSpeed: CGFloat, timeFrame: CFTimeInterval) {
-    
+        xTouchCurrentPosition = 0.0
+        xTouchDistance = 0.0
+        xTouchStartPosition = 0.0
     }
     
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-        if let xPos = xTargetPosition {
-            var xNewPos = worldNode!.position.x + (xPos - worldNode!.position.x) * 0.1
+        
+        // Scroll the background
+        scroll(xTouchDistance, currentTime: currentTime)
 
-            // Check if right end is reached
-            if xNewPos <= -(2 * worldNode!.nodeTileWidth) {
-                xTargetPosition = xTargetPosition! - xNewPos
-                xNewPos = 0
-                xOrgWorldPosition = 0
-                print("Right end reached")
-            // Check if left end is reached
-            } else if xNewPos >= 0 {
-                xNewPos = -(2 * worldNode!.nodeTileWidth)
-                xTargetPosition = xTargetPosition! + xNewPos
-                xOrgWorldPosition = xNewPos
-                print("Left end reached")
-            }
-            worldNode!.position.x = xNewPos
-            
-            // Rotate sprite depending on direction
-            if xNewPos > xTargetPosition {
-                spriteNode?.zRotation = CGFloat(M_PI/2.0)
-            } else {
-                spriteNode?.zRotation = -CGFloat(M_PI/2.0)
-            }
-            
-            // Continue after touches ended
-            if touchesEnded {
-                touchesCounter = touchesCounter - 1
-                if touchesCounter <= 0 {
-                    xTargetPosition = nil
-                }
-            }
-            
+        // Rotate sprite depending on direction
+        if xTouchDistance > 0 {
+            spriteNode?.zRotation = CGFloat(M_PI/2.0)
+        } else if xTouchDistance < 0 {
+            spriteNode?.zRotation = -CGFloat(M_PI/2.0)
         }
+
     }
+    
+    // Implement the scrolling
+    func scroll(speed: CGFloat, currentTime: CFTimeInterval) {
+        if lastUpdateTime != nil {
+            
+            // Calculate the new speed with the easing function (New speed is influence by current speed)
+            let  newSpeed = (currentSpeed + (speed - currentSpeed) * easeOutfactor)
+            currentSpeed = newSpeed
+            
+            // Set the new x position depending on the timeframe since the last calls.
+            // This is needed because spritekit cannot guarantee that the timeframe is allways the same
+            worldNode!.position.x = worldNode!.position.x + newSpeed * CGFloat((currentTime - lastUpdateTime!)) * speedFactor
+            
+            // Check if right end is reached
+            if worldNode!.position.x < -(2 * self.nodeTileWidth) {
+                worldNode!.position.x = 0.0
+                // Check if left end is reached
+            } else if worldNode!.position.x > 0 {
+                worldNode!.position.x = -(2 * self.nodeTileWidth)
+            }
+        }
+        lastUpdateTime = currentTime
+    }
+    
 }
