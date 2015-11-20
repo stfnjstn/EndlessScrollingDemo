@@ -9,8 +9,7 @@ A demo video is available in my YouTube channel: https://www.youtube.com/watch?v
 My Apps:
 https://itunes.apple.com/developer/stefan-josten/id949662361
 
-[![Sample image](http://img.youtube.com/vi/uYVqG8Y8rLU/0.jpg)](https://www.youtube.com/watch?v=uYVqG8Y8rLU)
-
+[![Sample image](http://img.youtube.com/vi/k1m1JH7yYAw/0.jpg)](https://www.youtube.com/watch?v=k1m1JH7yYAw)
 
 
 License
