@@ -9,8 +9,7 @@ A demo video is available in my YouTube channel: https://www.youtube.com/watch?v
 My Apps:
 https://itunes.apple.com/developer/stefan-josten/id949662361
 
-
-![Sample image](http://stefansdevplayground.blogspot.de/2015/11/quicktip-endless-scrolling-with.html)
+[![Sample image](http://img.youtube.com/vi/uYVqG8Y8rLU/0.jpg)](https://www.youtube.com/watch?v=uYVqG8Y8rLU)
 
 
 
