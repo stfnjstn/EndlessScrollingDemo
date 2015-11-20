@@ -1,12 +1,13 @@
 EndlessScrollingDemo
 ====================
 
-Sample code related to my endless scrolling tutorial:
-http://stefansdevplayground.blogspot.de/2015/11/quicktip-endless-scrolling-with.html
+Sample code related to my endless scrolling tutorial:<br />
+http://stefansdevplayground.blogspot.com/2015/11/quick-tip-endless-scrolling-with-easing.html
 
-A demo video is available in my YouTube channel: https://www.youtube.com/watch?v=uYVqG8Y8rLU&feature=youtu.be
+A demo video is available in my YouTube channel:<br />
+https://www.youtube.com/watch?v=uYVqG8Y8rLU&feature=youtu.be
 
-My Apps:
+My Apps:<br />
 https://itunes.apple.com/developer/stefan-josten/id949662361
 
 [![Sample image](http://img.youtube.com/vi/k1m1JH7yYAw/0.jpg)](https://www.youtube.com/watch?v=k1m1JH7yYAw)
